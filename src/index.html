@@ -4,10 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      #canvas {
+        border: 1px solid black;
+        box-sizing: content-box;
+      }
+    </style>
   </head>
   <body>
-    hello world
-    <canvas id="canvas" width="500" height="500"></canvas>
-    <script></script>
+    <canvas id="canvas" width="1000" height="1000">hello world</canvas>
+    <script>
+      function genImg(id) {
+        const canvas = document.getElementById(id);
+        if (canvas?.getContext) {
+          const imgURI = canvas.toDataURL("image/png");
+          const image = document.createElement("img");
+          image.src = imgURI;
+          document.body.appendChild(image);
+        }
+      }
+    </script>
+    <script>
+      const canvas = document.getElementById("canvas");
+      if (canvas?.getContext) {
+        const context = canvas.getContext("2d");
+        context.fillStyle = "rgba(255, 0, 0, 0.5)";
+        context.fillRect(10, 10, 100, 100);
+        context.fillStyle = "rgba(0, 0, 255, 0.5)";
+        context.fillRect(50, 50, 100, 100);
+      }
+      genImg("canvas");
+    </script>
   </body>
 </html>
