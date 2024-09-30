@@ -12,7 +12,20 @@
     </style>
   </head>
   <body>
+    <div id="block">
+      <h1>hello world</h1>
+      <img id="tao" src="./images/karltao.png" />
+      <h3>222</h3>
+    </div>
     <canvas id="canvas" width="1000" height="1000">hello world</canvas>
+    <script>
+      function showImage(context) {
+        const block = document.querySelector("#tao");
+        if (block) {
+          context.drawImage(block, 0, 10, 50, 50, 0, 100, 40, 60);
+        }
+      }
+    </script>
     <script>
       function genImg(id) {
         const canvas = document.getElementById(id);
@@ -25,8 +38,8 @@
       }
 
       function setColor(context) {
-        // context.fillStyle = "red";
-        // context.strokeStyle = "blue";
+        context.fillStyle = "red";
+        context.strokeStyle = "blue";
       }
 
       function drawRect(context) {
@@ -136,9 +149,7 @@
       if (canvas?.getContext) {
         const context = canvas.getContext("2d");
 
-        // setColor(context);
-
-        saveAndRestore(context);
+        showImage(context);
       }
       genImg("canvas");
     </script>
