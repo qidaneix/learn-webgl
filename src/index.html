@@ -25,8 +25,8 @@
       }
 
       function setColor(context) {
-        context.fillStyle = "red";
-        context.strokeStyle = "blue";
+        // context.fillStyle = "red";
+        // context.strokeStyle = "blue";
       }
 
       function drawRect(context) {
@@ -48,20 +48,87 @@
         context.clearRect(240, 240, 50, 50);
       }
       function drawClock(context) {
+        context.translate(100, 100);
+
         context.beginPath();
 
-        context.arc(100, 100, 99, 0, 2 * Math.PI);
+        context.arc(0, 0, 99, 0, 2 * Math.PI);
 
-        context.moveTo(194, 100);
-        context.arc(100, 100, 94, 0, 2 * Math.PI);
+        context.moveTo(94, 0);
+        context.arc(0, 0, 94, 0, 2 * Math.PI);
 
-        context.moveTo(100, 100);
-        context.lineTo(100, 15);
+        context.rotate(1);
 
-        context.moveTo(100, 100);
-        context.lineTo(35, 100);
+        context.moveTo(0, 0);
+        context.lineTo(0, -85);
+
+        context.moveTo(0, 0);
+        context.lineTo(-65, 0);
 
         context.stroke();
+
+        context.font = "bold 14px Menlo";
+        context.textBaseline = "middle";
+
+        context.textAlign = "center";
+        context.fillText("12", 0, -80);
+
+        context.textAlign = "start";
+        context.fillText("12", 0, -60);
+
+        context.textAlign = "end";
+        context.fillText("12", 0, -40);
+      }
+      function drawText(context) {
+        context.textBaseLine = "top[]";
+        context.textAlign = "start";
+        let fontSize = 100;
+        context.font = fontSize + "px Arial";
+        while (context.measureText("hello world").width > 140) {
+          fontSize--;
+          context.font = fontSize + "px Arial";
+        }
+        context.fillText("hello world", 10, 100);
+        context.fillText(`Font Size is ${fontSize}px`, 10, 150);
+      }
+      class Stack {
+        constructor(context) {
+          this.context = context;
+          this.count = 0;
+        }
+
+        save() {
+          this.count += 1;
+          this.context.save();
+        }
+
+        restore() {
+          if (this.count > 0) {
+            this.count -= 1;
+            this.context.restore();
+          } else {
+            throw new Error("Stack is empty");
+          }
+        }
+      }
+      function saveAndRestore(context) {
+        const stack = new Stack(context);
+
+        context.fillStyle = "red";
+        stack.save();
+
+        context.fillStyle = "green";
+        context.translate(100, 100);
+        stack.save();
+
+        context.fillStyle = "blue";
+        context.fillRect(0, 0, 100, 200);
+
+        stack.restore();
+        context.fillRect(10, 10, 100, 200);
+
+        stack.restore();
+        context.fillRect(0, 0, 100, 200);
       }
     </script>
     <script>
@@ -69,9 +136,9 @@
       if (canvas?.getContext) {
         const context = canvas.getContext("2d");
 
-        setColor(context);
+        // setColor(context);
 
-        drawClock(context);
+        saveAndRestore(context);
       }
       genImg("canvas");
     </script>
